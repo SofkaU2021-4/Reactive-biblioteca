@@ -4,16 +4,21 @@ package com.example.bibliotecareactiva.DTOs;
 import com.example.bibliotecareactiva.Enums.AreaTematica;
 import com.example.bibliotecareactiva.Enums.TipoRecuerso;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 import java.util.Objects;
 
 public class RecursoDTO {
 
     private String id;
+    @NotBlank
     private String nombre;
-    private boolean isDisponible = true;
+
+    private boolean disponible = true;
     private Date fechaPrestamo;
+    @NotBlank
     private AreaTematica areaTematica ;
+    @NotBlank
     private TipoRecuerso tipoRecurso ;
 
     public RecursoDTO() {
@@ -36,7 +41,7 @@ public class RecursoDTO {
     }
 
     public boolean isDisponible() {
-        return isDisponible;
+        return disponible;
     }
 
     public Date getFechaPrestamo() {
@@ -60,7 +65,7 @@ public class RecursoDTO {
     }
 
     public void setDisponible(boolean disponible) {
-        isDisponible = disponible;
+        this.disponible = disponible;
     }
 
     public void setFechaPrestamo(Date fechaPrestamo) {
@@ -80,11 +85,11 @@ public class RecursoDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RecursoDTO that = (RecursoDTO) o;
-        return isDisponible == that.isDisponible && Objects.equals(id, that.id) && Objects.equals(nombre, that.nombre) && Objects.equals(fechaPrestamo, that.fechaPrestamo) && areaTematica == that.areaTematica && tipoRecurso == that.tipoRecurso;
+        return disponible == that.disponible && Objects.equals(id, that.id) && Objects.equals(nombre, that.nombre) && Objects.equals(fechaPrestamo, that.fechaPrestamo) && areaTematica == that.areaTematica && tipoRecurso == that.tipoRecurso;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nombre, isDisponible, fechaPrestamo, areaTematica, tipoRecurso);
+        return Objects.hash(id, nombre, disponible, fechaPrestamo, areaTematica, tipoRecurso);
     }
 }

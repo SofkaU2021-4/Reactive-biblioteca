@@ -8,19 +8,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
+
 @Service
 @Validated
-public class CrearRecursoUseCase implements GuardarDato {
-    private final RecursoRepository recursoRepository;
-    private final RecursoMapper recursoMapper;
+public class ActualizarRecursoUseCase  implements GuardarDato{
+    private final RecursoRepository repositorio;
+    private final RecursoMapper mapper;
 
-    public CrearRecursoUseCase(RecursoMapper recursoMapper, RecursoRepository recursoRepository) {
-        this.recursoRepository = recursoRepository;
-        this.recursoMapper = recursoMapper;
+    public ActualizarRecursoUseCase(RecursoMapper mapper, RecursoRepository repositorio) {
+        this.repositorio = repositorio;
+        this.mapper = mapper;
     }
 
     @Override
     public Mono<Recurso> apply(RecursoDTO recursoDTO) {
-        return recursoRepository.save(recursoMapper.mapToRecurso().apply(recursoDTO)).map(recurso -> recurso);
+        Objects.requireNonNull(recursoDTO.getId(), "El id del recurso es requerido");
+        return repositorio.save(mapper.mapToRecurso().apply(recursoDTO));
     }
 }

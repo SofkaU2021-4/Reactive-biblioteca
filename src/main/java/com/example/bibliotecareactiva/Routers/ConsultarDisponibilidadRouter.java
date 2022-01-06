@@ -1,12 +1,9 @@
 package com.example.bibliotecareactiva.Routers;
 
-
-import com.example.bibliotecareactiva.DTOs.RecursoDTO;
-import com.example.bibliotecareactiva.UseCases.ListarRecursosUseCase;
+import com.example.bibliotecareactiva.UseCases.ConsultarDisponibilidadUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -14,19 +11,19 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
-
 @Configuration
-public class ListarRecursoRouter {
+public class ConsultarDisponibilidadRouter {
 
     @Bean
-    public RouterFunction<ServerResponse> getAll(ListarRecursosUseCase listarRecursosUseCase) {
-        return route(GET("/recursos").and(accept(MediaType.APPLICATION_JSON)),
-                request -> ServerResponse.ok()
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .body(BodyInserters.fromPublisher(listarRecursosUseCase.get(), RecursoDTO.class))
-                        .onErrorResume((error) -> ServerResponse.badRequest().build())
+    public RouterFunction<ServerResponse> Disponiblibilidad(ConsultarDisponibilidadUseCase consultarDisponibilidadUseCase) {
+        return route(
+                GET("/recursos/disponible/{id}").and(accept(MediaType.APPLICATION_JSON)),
+                request -> ServerResponse.accepted()
+                        .contentType(MediaType.TEXT_PLAIN)
+                        .body(BodyInserters
+                                .fromPublisher(consultarDisponibilidadUseCase
+                                        .apply(request.pathVariable("id")), String.class))
         );
     }
-
-
 }
+

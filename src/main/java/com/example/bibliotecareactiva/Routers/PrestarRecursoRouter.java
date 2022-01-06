@@ -1,11 +1,12 @@
 package com.example.bibliotecareactiva.Routers;
 
-import com.example.bibliotecareactiva.Service.RecursoService;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import com.example.bibliotecareactiva.UseCases.PrestarRecursoUseCase;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.BodyInserters;
+
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
@@ -15,16 +16,15 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 
 @Configuration
 public class PrestarRecursoRouter {
-    @Autowired
-    RecursoService recursoService;
+
 
     @Bean
-    public RouterFunction<ServerResponse> prestarRecurso() {
+    public RouterFunction<ServerResponse> prestarRecurso(PrestarRecursoUseCase prestarRecursoUseCase) {
         return route(
                 PUT("/recursos/prestar/{id}").and(accept(MediaType.APPLICATION_JSON)),
                 request -> ServerResponse.ok()
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .body(BodyInserters.fromPublisher(recursoService.prestarRecurso(request.pathVariable("id")), String.class))
+                        .contentType(MediaType.TEXT_PLAIN)
+                        .body(prestarRecursoUseCase.apply(request.pathVariable("id")), String.class)
         );
     }
 

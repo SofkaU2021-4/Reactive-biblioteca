@@ -16,9 +16,8 @@ public class Recurso {
 
     @Id
     private String id;
-
     private String nombre;
-    private boolean isDisponible = true;
+    private boolean disponible = true;
     private Date fechaPrestamo;
     private AreaTematica areaTematica ;
     private TipoRecuerso tipoRecurso ;
@@ -32,12 +31,12 @@ public class Recurso {
         this.tipoRecurso = tipoRecurso;
     }
 
-    public Recurso(String id, String nombre, AreaTematica areaTematica, TipoRecuerso tipoRecurso, Boolean isDisponible) {
+    public Recurso(String id, String nombre, AreaTematica areaTematica, TipoRecuerso tipoRecurso, Boolean disponible) {
         this.id=id;
         this.nombre = nombre;
         this.areaTematica = areaTematica;
         this.tipoRecurso = tipoRecurso;
-        this.isDisponible=isDisponible;
+        this.disponible = disponible;
     }
 
     public void setId(String id) {
@@ -63,7 +62,7 @@ public class Recurso {
     }
 
     public boolean isDisponible() {
-        return isDisponible;
+        return disponible;
     }
 
     public Date getFechaPrestamo() {
@@ -83,7 +82,7 @@ public class Recurso {
     }
 
     public void setDisponible(boolean disponible) {
-        isDisponible = disponible;
+        this.disponible = disponible;
     }
 
     public void setFechaPrestamo(Date fechaPrestamo) {
@@ -95,11 +94,11 @@ public class Recurso {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Recurso recurso = (Recurso) o;
-        return isDisponible == recurso.isDisponible && Objects.equals(id, recurso.id) && Objects.equals(nombre, recurso.nombre) && Objects.equals(fechaPrestamo, recurso.fechaPrestamo) && areaTematica == recurso.areaTematica && tipoRecurso == recurso.tipoRecurso;
+        return disponible == recurso.disponible && Objects.equals(id, recurso.id) && Objects.equals(nombre, recurso.nombre) && Objects.equals(fechaPrestamo, recurso.fechaPrestamo) && areaTematica == recurso.areaTematica && tipoRecurso == recurso.tipoRecurso;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nombre, isDisponible, fechaPrestamo, areaTematica, tipoRecurso);
+        return Objects.hash(id, nombre, disponible, fechaPrestamo, areaTematica, tipoRecurso);
     }
 }
