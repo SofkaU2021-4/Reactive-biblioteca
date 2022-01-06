@@ -43,7 +43,7 @@ public class BuscarAreaYTipoUseCase implements Function<MultiValueMap<String,Str
         else if(stringStringMultiValueMap.containsKey("tipoRecurso")){
             return repositorio.findByTipoRecurso(TipoRecuerso.valueOf(stringStringMultiValueMap.getFirst("tipoRecurso")));
         }
-        return Flux.error(new ResponseStatusException(HttpStatus.BAD_REQUEST , "id erroneo"));
+        return Flux.error(new ResponseStatusException(HttpStatus.BAD_REQUEST , "datos del params erroneos"));
 
     }
 

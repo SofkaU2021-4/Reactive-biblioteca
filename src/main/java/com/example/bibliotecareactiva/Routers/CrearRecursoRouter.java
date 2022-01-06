@@ -25,7 +25,7 @@ public class CrearRecursoRouter {
                                 .flatMap(result -> ServerResponse.ok()
                                         .contentType(MediaType.APPLICATION_JSON)
                                         .bodyValue(result))
-                        ).onErrorResume((error) -> ServerResponse.badRequest().build())
+                        ).onErrorResume(throwable -> ServerResponse.badRequest().build())
         );
     }
 

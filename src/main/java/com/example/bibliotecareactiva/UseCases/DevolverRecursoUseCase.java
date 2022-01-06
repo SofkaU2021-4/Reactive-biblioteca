@@ -28,7 +28,7 @@ public class DevolverRecursoUseCase implements Function<String, Mono<String>> {
                     if(!value.isDisponible()){
                         value.setDisponible(true);
                         value.setFechaPrestamo(new Date());
-                        return  repositorio.save(value).thenReturn("recurso devuelto ");
+                        return  repositorio.save(value).thenReturn("recurso devuelto");
                     }
                     return Mono.just("paila ñeco");
                 });

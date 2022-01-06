@@ -1,19 +1,17 @@
 package com.example.bibliotecareactiva.Routers;
 
-import com.example.bibliotecareactiva.DTOs.RecursoDTO;
 import com.example.bibliotecareactiva.Enums.AreaTematica;
 import com.example.bibliotecareactiva.Enums.TipoRecuerso;
 import com.example.bibliotecareactiva.Mappers.RecursoMapper;
 import com.example.bibliotecareactiva.Models.Recurso;
 import com.example.bibliotecareactiva.Repository.RecursoRepository;
-import com.example.bibliotecareactiva.UseCases.CrearRecursoUseCase;
+import com.example.bibliotecareactiva.UseCases.PrestarRecursoUseCase;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -25,8 +23,8 @@ import static org.mockito.Mockito.when;
 
 @WebFluxTest
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {CrearRecursoRouter.class, CrearRecursoUseCase.class, RecursoMapper.class})
-class CrearRecursoRouterTest {
+@ContextConfiguration(classes = {PrestarRecursoRouter.class, PrestarRecursoUseCase.class, RecursoMapper.class})
+class PrestarRecursoRouterTest {
 
     @MockBean
     private RecursoRepository recursoRepository;
@@ -34,40 +32,41 @@ class CrearRecursoRouterTest {
     @Autowired
     private WebTestClient webTestClient;
 
-
     @Test
-    public void testCreateRecurso(){
+    public void testPrestarRecuerso(){
 
         Recurso recurso = new Recurso();
         recurso.setNombre("el libro de la selva");
         recurso.setAreaTematica(AreaTematica.INFANTIL);
         recurso.setTipoRecurso(TipoRecuerso.LIBRO);
+        recurso.setId("xxx");
+        recurso.setDisponible(true);
 
-        RecursoDTO recursoDTO = new RecursoDTO(
-                recurso.getNombre(),
-                recurso.getAreaTematica(),
-                recurso.getTipoRecurso()
-        );
+        Recurso recurso1 = new Recurso();
+        recurso1.setId(recurso.getId());
+        recurso1.setNombre(recurso.getNombre());
+        recurso1.setTipoRecurso(recurso.getTipoRecurso());
+        recurso1.setAreaTematica(recurso.getAreaTematica());
+        recurso1.setDisponible(false);
+
 
         Mono<Recurso> recursoMono = Mono.just(recurso);
+        Mono<Recurso> recursoMono1 = Mono.just(recurso1);
+        when(recursoRepository.findById(recurso.getId())).thenReturn(recursoMono);
+        when(recursoRepository.save(any())).thenReturn(recursoMono1);
 
-        when(recursoRepository.save(any())).thenReturn(recursoMono);
 
-        webTestClient.post()
-                .uri("/crear")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .body(Mono.just(recursoDTO), RecursoDTO.class)
+        webTestClient.put()
+                .uri("/recursos/prestar/{id}", "xxx")
                 .exchange()
                 .expectStatus().isOk()
-                .expectBody(RecursoDTO.class)
+                .expectBody(String.class)
                 .value(userResponse -> {
-                            Assertions.assertThat(userResponse).isEqualTo(recursoDTO);
+                            Assertions.assertThat(userResponse).isEqualTo("recurso prestado ");
                         }
                 );
 
 
     }
-
 
 }

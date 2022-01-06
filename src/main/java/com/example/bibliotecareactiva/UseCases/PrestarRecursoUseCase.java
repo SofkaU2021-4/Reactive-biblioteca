@@ -24,9 +24,8 @@ public class PrestarRecursoUseCase implements Function<String , Mono<String>> {
 
     @Override
     public Mono<String> apply(String id) {
-        var recursoUpdate= recursoRepository.findById(id);
 
-        return recursoUpdate.flatMap(
+        return recursoRepository.findById(id).flatMap(
                 value->{
                     if(value.isDisponible()){
                         value.setDisponible(false);

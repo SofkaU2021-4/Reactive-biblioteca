@@ -13,8 +13,7 @@ public class RecursoDTO {
     private String id;
     @NotBlank
     private String nombre;
-
-    private boolean disponible = true;
+    private Boolean disponible = true;
     private Date fechaPrestamo;
     @NotBlank
     private AreaTematica areaTematica ;
